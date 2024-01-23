@@ -254,24 +254,23 @@ table_efficiency(samples_by_ph, short_labels, figures/"table_efficiency")
 ```
 ### Sample Plots and Figures
 
-#### plot_spec(C, figures/"plot_spec_C") 
-plot_spec draws the outline of peaks; Good for all peaks
+#### plot_spec(C, figures/plot_spec_C) 
+Draws the outline of peaks; Good for all peaks
 ![plot_spec_C](figures/plot_spec_C.png)
 
-#### plot_spike_spec(call_peaks(C, 750), figures/"plot_spike_spec_C") 
-plot_spke_spec draws filled in peaks; Good for showing fewwer peaks
-call_peaks only returns peaks with intensity > height, 1500 based upon scipy.find_peaks
+#### plot_spike_spec(call_peaks(C, 750), figures/plot_spike_spec_C) 
+Draws filled in peaks; Good for showing fewwer peaks. Only returns peaks with intensity > height, 1500 based upon scipy.find_peaks
 ![plot_spike_spec_C](figures/plot_spike_spec_C.png)
 
-#### plot_multiple_specs(samples_by_ph, short_labels, figures/"plot_multiple_specs") 
-plot_multiple peaks shows multiple sample spectrum in one figure
+#### plot_multiple_specs(samples_by_ph, short_labels, figures/plot_multiple_specs) 
+Plots multiple multiple spectrum in one figure
 ![plot_multiple_specs](figures/plot_multiple_specs.png)
 
-#### plot_efficiency(samples_by_ph, short_labels, figures/"plot_efficiency", champ = "Recipe C") 
-plot_efficiency creates a figure of C -> 4mC efficiency by sample. champ is the prior most efficient sample
+#### plot_efficiency(samples_by_ph, short_labels, figures/plot_efficiency, champ = "Recipe C") 
+Creates a figure of C -> 4mC efficiency by sample. `champ` is the prior most efficient sample
 ![plot_efficiency](figures/plot_efficiency.png)
 
-#### table_efficiency(samples_by_ph, short_labels, figures/"table_efficiency") 
+#### table_efficiency(samples_by_ph, short_labels, figures/table_efficiency) 
 table_efficiency creates a table of efficiency by sample
-![table_efficiency](figures/table_efficiency.png)
 
+![table_efficiency](figures/table_efficiency.png)
