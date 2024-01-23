@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Emacs
+*.~undo-tree~
+
 # C extensions
 *.so
 
