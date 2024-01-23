@@ -129,23 +129,22 @@ def apex_peaks(peaks, height = 1500, dist = 5):
 ```
 
 ## fmc.py
-This library is specfic to for functions associated with C -> 4mC. It is a specifically used in the analysis of Mass Specturm Data in Study of C -> 4mC (in DNA oligo 5'-A-G-C-G-A-3')                                                                                     
+This library is specfic to for functions associated with C -> 4mC. It is a specifically used in the analysis of Mass Specturm Data in Study of C -> 4mC (in DNA oligo 5'-A-G-C-G-A-3')                                                                      
+### Sample Usage
 ```
 >>> from fmc import *
 from pathlib import Path
-
 data = Path("data")
 figures = Path("figures")
-
 Control = read_ms_txt(data/"2024_01_11_C_mer_Control_0_I9_1.txt")
 C  = read_ms_txt(data/"2024_01_11_Recipe_C_pH_7.3_K2SO3_950_MeNH2HCl_2024_min_20_0_J8_1.txt")
 D1 = read_ms_txt(data/"2024_01_11_10.25_K2S2SO5_666_MAAcid_1400_MeABase_802_min_20_0_K9_1.txt")
 >>> c_peak(Control)
-(array([1508.756]), array([40647]))                                                                                                                                                                             
->>> c_peak(C)                                                                                                                                                                                                   
-(array([1508.729]), array([20144]))                                                                                                                                                                             
->>> fmc_peak(Control)                                                                                                                                                                                           
-(array([], dtype=float64), array([], dtype=int64))                                                                                                                                                              
+(array([1508.756]), array([40647]))                                                                                  
+>>> c_peak(C)                                                                    
+(array([1508.729]), array([20144]))                                                 
+>>> fmc_peak(Control)                                                            
+(array([], dtype=float64), array([], dtype=int64))                                
 >>> fmc_peak(C)
 (array([1522.734]), array([49531]))
 >>> efficiency(C)
@@ -238,4 +237,19 @@ C Potassium Peaks: [1546.655]
 (87, (1595.729, 6782))
 (88, (1596.729, 5836))
 (89, (1597.729, 7561))
+>>> from example import *
+samples_by_ph = [Control, C, D1, D2, D6, D4, D5, D3]
+short_labels = ["Control", "Recipe C", "D1", "D2", "D6", "D4","D5","D3"]
+>>> # plot_spec draws the outline of peaks; Good for all peaks
+plot_spec(C, figures/"plot_spec_C")
+# plot_spke_spec darws filled in peaks; Good for showing fewwer peaks
+# call_peaks only returns peaks with intensity > height, 1500 based upon scipy.find_peaks
+plot_spike_spec(call_peaks(C, 750), figures/"plot_spike_spec_C")
+# plot_multiple peaks shows multiple sample spectrum in one figure
+plot_multiple_specs(samples_by_ph, short_labels, figures/"plot_multiple_specs")
+# plot_efficiency creates a figure of C -> 4mC efficiency by sample. champ is the prior most efficient sample
+plot_efficiency(samples_by_ph, short_labels, figures/"plot_efficiency", champ = "Recipe C")
+# table_efficiency creates a table of efficiency by sample
+table_efficiency(samples_by_ph, short_labels, figures/"table_efficiency")
 ```
+### Sample Plots and Figures
