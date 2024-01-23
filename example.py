@@ -2,7 +2,7 @@
 #
 #   example.py
 #
-#   C. Bryan Daniels, cdaniels(at)uchicago.edu
+#   C. Bryan Daniels, cdaniels@nandor.net
 #
 #   1/22/2024
 #

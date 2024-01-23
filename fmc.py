@@ -9,7 +9,7 @@
 #
 #   This library is specfic to for functions associated with C -> 4mC
 #
-#   C. Bryan Daniels, cdaniels(at)uchicago.edu
+#   C. Bryan Daniels, cdaniels@nandor.net
 #
 #   1/22/2024
 #
