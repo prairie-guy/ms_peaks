@@ -129,7 +129,7 @@ def apex_peaks(peaks, height = 1500, dist = 5):
 ```
 
 ## fmc.py
-This library is specfic to for functions associated with C -> 4mC. It is a specifically used in the analysis of Mass Specturm Data in Study of C -> 4mC (in DNA oligo 5'-A-G-C-G-A-3')                                                                      
+This library is specific to for functions associated with C -> 4mC. It is a specifically used in the analysis of Mass Spectrum Data in Study of C -> 4mC (in DNA oligo 5'-A-G-C-G-A-3')                                                                      
 ### Sample Usage
 ```
 >>> from fmc import *
@@ -242,7 +242,7 @@ samples_by_ph = [Control, C, D1, D2, D6, D4, D5, D3]
 short_labels = ["Control", "Recipe C", "D1", "D2", "D6", "D4","D5","D3"]
 >>> # plot_spec draws the outline of peaks; Good for all peaks
 plot_spec(C, figures/"plot_spec_C")
-# plot_spke_spec darws filled in peaks; Good for showing fewwer peaks
+# plot_spike_spec draws filled in peaks; Good for showing fewer peaks
 # call_peaks only returns peaks with intensity > height, 1500 based upon scipy.find_peaks
 plot_spike_spec(call_peaks(C, 750), figures/"plot_spike_spec_C")
 # plot_multiple peaks shows multiple sample spectrum in one figure
@@ -259,7 +259,7 @@ Draws the outline of peaks; Good for all peaks
 ![plot_spec_C](figures/plot_spec_C.png)
 
 #### plot_spike_spec(call_peaks(C, 750), figures/plot_spike_spec_C) 
-Draws filled in peaks; Good for showing fewwer peaks. Only returns peaks with intensity > height, 1500 based upon scipy.find_peaks
+Draws filled in peaks; Good for showing fewer peaks. Only returns peaks with intensity > height, 1500 based upon scipy.find_peaks
 ![plot_spike_spec_C](figures/plot_spike_spec_C.png)
 
 #### plot_multiple_specs(samples_by_ph, short_labels, figures/plot_multiple_specs) 

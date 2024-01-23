@@ -56,7 +56,7 @@ full_labels = ["C-mer Control",
 # plot_spec draws the outline of peaks; Good for all peaks
 plot_spec(C, figures/"plot_spec_C")
 
-# plot_spke_spec darws filled in peaks; Good for showing fewwer peaks
+# plot_spec_spec draws filled in peaks; Good for showing fewer peaks
 # call_peaks only returns peaks with intensity > height, 1500 based upon scipy.find_peaks
 plot_spike_spec(call_peaks(C, 750), figures/"plot_spike_spec_C")
 

@@ -2,12 +2,12 @@
 #
 #   fmc.py
 #
-#   Analysis of Mass Specturm Data in Study of C -> 4mC (in DNA oligo 5'-A-G-C-G-A-3')
+#   Analysis of Mass Spectrum Data in Study of C -> 4mC (in DNA oligo 5'-A-G-C-G-A-3')
 #
 #
 #   ms_peaks.py provides general primitives to work with data type: Peaks
 #
-#   This library is specfic to for functions associated with C -> 4mC
+#   This library is specific to for functions associated with C -> 4mC
 #
 #   C. Bryan Daniels, cdaniels@nandor.net
 #
@@ -58,7 +58,7 @@ def fmc_peak(peaks):
 def c_peak_area_spectrum(peaks, mz_to=90):
     """
     c_peak_spectrum :: Peaks -> {d: (mz, intensity)}
-    Calculate area_peak for each mz from c_peak to (c_peak + 90) and return {d: (mz, intenisty)}
+    Calculate area_peak for each mz from c_peak to (c_peak + 90) and return {d: (mz, intensity)}
     Note: Useful Utility to scan data
     """
     return {d: (mz(c_peak(peaks)) + d, area_peak(peaks, mz(c_peak(peaks)) + d)) for d in range(0,mz_to)}
