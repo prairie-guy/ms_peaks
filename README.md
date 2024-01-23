@@ -240,17 +240,11 @@ C Potassium Peaks: [1546.655]
 >>> from example import *
 samples_by_ph = [Control, C, D1, D2, D6, D4, D5, D3]
 short_labels = ["Control", "Recipe C", "D1", "D2", "D6", "D4","D5","D3"]
->>> # plot_spec draws the outline of peaks; Good for all peaks
-plot_spec(C, figures/"plot_spec_C")
-# plot_spike_spec draws filled in peaks; Good for showing fewer peaks
-# call_peaks only returns peaks with intensity > height, 1500 based upon scipy.find_peaks
-plot_spike_spec(call_peaks(C, 750), figures/"plot_spike_spec_C")
-# plot_multiple peaks shows multiple sample spectrum in one figure
-plot_multiple_specs(samples_by_ph, short_labels, figures/"plot_multiple_specs")
-# plot_efficiency creates a figure of C -> 4mC efficiency by sample. champ is the prior most efficient sample
-plot_efficiency(samples_by_ph, short_labels, figures/"plot_efficiency", champ = "Recipe C")
-# table_efficiency creates a table of efficiency by sample
-table_efficiency(samples_by_ph, short_labels, figures/"table_efficiency")
+>>> plot_spec(C, figures/"plot_spec_C")
+>>> plot_spike_spec(call_peaks(C, 750), figures/"plot_spike_spec_C")
+>>> plot_multiple_specs(samples_by_ph, short_labels, figures/"plot_multiple_specs")
+>>> plot_efficiency(samples_by_ph, short_labels, figures/"plot_efficiency", champ = "Recipe C")
+>>> table_efficiency(samples_by_ph, short_labels, figures/"table_efficiency")
 ```
 ### Sample Plots and Figures
 
