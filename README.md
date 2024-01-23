@@ -12,11 +12,11 @@ Peaks are a tuple of two numpy arrays, of which the first array contains values 
 second the values of intensity. The data type is not strictly enforced as a class,
 but could easily be implemented as such. (Types are loosely defined in Haskell Style)
 
-- Type Peaks = ([mz], [Intensity])
+- **Type Peaks = ([mz], [Intensity])**
 
-- Type mz = [Float]
+- **Type mz = [Float]**
 
-- Type Intensity = [Int]
+- **Type Intensity = [Int]**
 
 ### Primitives and Functions 
 `ms_peaks.py` is reasonably well documented. Below are the functions defined within `ms_peaks.py` 
