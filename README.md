@@ -139,44 +139,59 @@ figures = Path("figures")
 Control = read_ms_txt(data/"2024_01_11_C_mer_Control_0_I9_1.txt")
 C  = read_ms_txt(data/"2024_01_11_Recipe_C_pH_7.3_K2SO3_950_MeNH2HCl_2024_min_20_0_J8_1.txt")
 D1 = read_ms_txt(data/"2024_01_11_10.25_K2S2SO5_666_MAAcid_1400_MeABase_802_min_20_0_K9_1.txt")
+
 >>> c_peak(Control)
-(array([1508.756]), array([40647]))                                                                                  
+(array([1508.756]), array([40647]))
+
 >>> c_peak(C)                                                                    
-(array([1508.729]), array([20144]))                                                 
+(array([1508.729]), array([20144]))
+
 >>> fmc_peak(Control)                                                            
-(array([], dtype=float64), array([], dtype=int64))                                
+(array([], dtype=float64), array([], dtype=int64))
+
 >>> fmc_peak(C)
 (array([1522.734]), array([49531]))
+
 >>> efficiency(C)
 0.73
+
 >>> efficiency(D1)
 0.28
+
 >>> efficiency(Control)
 0.0
+
 >>> call_peaks(C)
 (array([1508.729, 1509.732, 1510.735, 1522.734, 1523.742, 1524.75 ,
        1525.745, 1546.655, 1547.644, 1560.657, 1561.663, 1562.67 ,
        1598.573]), array([20144, 12262,  4470, 49531, 31754, 11739,  3028,  4781,  2600,
        11830,  7385,  3553,  2467]))
+       
 >>> get_mz(call_peaks(C))
 array([1508.729, 1509.732, 1510.735, 1522.734, 1523.742, 1524.75 ,
        1525.745, 1546.655, 1547.644, 1560.657, 1561.663, 1562.67 ,
        1598.573])
+       
 >>> get_intensity(call_peaks(C))
 array([20144, 12262,  4470, 49531, 31754, 11739,  3028,  4781,  2600,
        11830,  7385,  3553,  2467])
+       
 >>> area_peak(C, mz(c_peak(C)))
 224906
+
 >>> area_peak(C, mz(fmc_peak(C)))
 594303
+
 >>> area_peak(C, mz(fmc_peak(C)) + 83)
 7395
+
 >>> label_peaks(C)
 Apex Peaks: [1508.729 1522.734 1546.655 1560.657 1598.573]
 C Peak: 1508.729
 C Potassium Peaks: [1546.655]
 4mC Peak: 1522.734
 4mC Potassium Peaks: [1560.657 1598.573]
+
 >>> for p in c_peak_area_spectrum(C).items(): print(p) # These are all areas under curve:  peak +/- 0.5
 ...
 (0, (1508.729, 224906)) # <- C Apex
@@ -237,9 +252,11 @@ C Potassium Peaks: [1546.655]
 (87, (1595.729, 6782))
 (88, (1596.729, 5836))
 (89, (1597.729, 7561))
+
 >>> from example import *
 samples_by_ph = [Control, C, D1, D2, D6, D4, D5, D3]
 short_labels = ["Control", "Recipe C", "D1", "D2", "D6", "D4","D5","D3"]
+
 >>> plot_spec(C, figures/"plot_spec_C")
 >>> plot_spike_spec(call_peaks(C, 750), figures/"plot_spike_spec_C")
 >>> plot_multiple_specs(samples_by_ph, short_labels, figures/"plot_multiple_specs")
@@ -250,21 +267,21 @@ short_labels = ["Control", "Recipe C", "D1", "D2", "D6", "D4","D5","D3"]
 
 #### plot_spec(C, figures/plot_spec_C) 
 Draws the outline of peaks; Good for all peaks
-![plot_spec_C](figures/plot_spec_C.png)
+![plot_spec_C](test/figures/plot_spec_C.png)
 
 #### plot_spike_spec(call_peaks(C, 750), figures/plot_spike_spec_C) 
 Draws filled in peaks; Good for showing fewer peaks. Only returns peaks with intensity > height, 1500 based upon scipy.find_peaks
-![plot_spike_spec_C](figures/plot_spike_spec_C.png)
+![plot_spike_spec_C](test/figures/plot_spike_spec_C.png)
 
 #### plot_multiple_specs(samples_by_ph, short_labels, figures/plot_multiple_specs) 
 Plots multiple multiple spectrum in one figure
-![plot_multiple_specs](figures/plot_multiple_specs.png)
+![plot_multiple_specs](test/figures/plot_multiple_specs.png)
 
 #### plot_efficiency(samples_by_ph, short_labels, figures/plot_efficiency, champ = "Recipe C") 
 Creates a figure of C -> 4mC efficiency by sample. `champ` is the prior most efficient sample
-![plot_efficiency](figures/plot_efficiency.png)
+![plot_efficiency](test/figures/plot_efficiency.png)
 
 #### table_efficiency(samples_by_ph, short_labels, figures/table_efficiency) 
 table_efficiency creates a table of efficiency by sample
 
-![table_efficiency](figures/table_efficiency.png)
+![table_efficiency](test/figures/table_efficiency.png)
