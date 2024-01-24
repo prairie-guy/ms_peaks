@@ -14,8 +14,8 @@
 #
 #
 ####################################################################################################
-
-
+import sys
+sys.path.append("..")
 from fmc import *
 from pathlib import Path
 

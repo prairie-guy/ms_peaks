@@ -81,7 +81,7 @@ def efficiency(peaks):
     return abs(round(fmc/(c+fmc), 2))
 
 
-def plot_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = (20,10)):
+def plot_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = (20,10), annotate = True):
     if len_peaks(peaks) < 500:
         return("`plot_deep_spec` is for original ms data. Use `plot_spec` instead")
     mz, intensity = peaks
@@ -92,6 +92,9 @@ def plot_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = (20,10
     plt.xlabel("m/z")
     plt.ylabel("Intensity")
     plt.title(fname) if title == None else plt.title(title)
+    if annotate:
+        for (x,y) in zip(get_mz(apex_peaks(peaks)), get_intensity(apex_peaks(peaks))):
+            plt.annotate(x, xy=(x,y), textcoords="offset points", xytext=(0,10), ha='center')
     plt.savefig(f"{fname}.png")
     plt.close()
 
