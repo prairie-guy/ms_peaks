@@ -96,7 +96,7 @@ def plot_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = (20,10
     plt.close()
 
 
-def plot_spike_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = (20,10)):
+def plot_spike_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = (20,10), annotate = True):
     mz, intensity = peaks
     plt.figure(figsize = figsize)
     plt.vlines(mz, ymin=0, ymax=intensity)
@@ -105,11 +105,14 @@ def plot_spike_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = 
     plt.xlabel("m/z")
     plt.ylabel("Intensity")
     plt.title(fname) if title == None else plt.title(title)
+    if annotate:
+        for (x,y) in zip(get_mz(apex_peaks(peaks)), get_intensity(apex_peaks(peaks))):
+            plt.annotate(x, xy=(x,y), textcoords="offset points", xytext=(0,10), ha='center')
     plt.savefig(f"{fname}.png")
     plt.close()
 
 
-def plot_multiple_specs(peaks_list, labels_list, fname, xrange=(1500, 1600), figsize=(20, 10)):
+def plot_multiple_specs(peaks_list, labels_list, fname, xrange=(1500, 1600), figsize=(20, 16), annotate = True):
     n = len(peaks_list)
     fig, axs = plt.subplots(n, 1, figsize=figsize, squeeze=False)
     for i, peaks in enumerate(peaks_list):
@@ -118,12 +121,14 @@ def plot_multiple_specs(peaks_list, labels_list, fname, xrange=(1500, 1600), fig
         ax.vlines(mz, ymin=0, ymax=intensity)
         ax.set_xlim(*xrange)
         ax.grid(color='gray', linestyle='-', linewidth=0.5)
-        #ax.set_xlabel("m/z")
-        #ax.set_ylabel("Intensity")
+        if annotate:
+            apex_mz = get_mz(apex_peaks(peaks))
+            apex_intensity = get_intensity(apex_peaks(peaks))
+            for x, y in zip(apex_mz, apex_intensity):
+                ax.annotate(str(x), xy=(x, y), textcoords="offset points", xytext=(0, 10), ha='center')
         title = labels_list[i]
         ax.text(0.5, 0.8, title, horizontalalignment='center', verticalalignment='center',
                 transform=ax.transAxes, fontsize=12, color='black')
-        #ax.set_title(labels_list[i])
     plt.tight_layout()
     plt.savefig(f"{fname}.png")
     plt.close(fig)
