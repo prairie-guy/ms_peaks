@@ -212,4 +212,22 @@ def apex_peaks(peaks, height = 1500, dist = 5):
     intensity = [intensity[np.argmax(intensity)] for mz, intensity in groups]
     return Peaks(mz, intensity)
 
+def choose_peak(peaks, mz_base, height = 1500, delta = 2):
+    """
+    choose_peak :: Peaks -> Real -> Int -> Peak
+    Return highest Peak within range:  (mz_base - delta) < mz < (mz_base + delta)
+    """
+    apexes = apex_peaks(peaks, height)
+    return range_peaks(apexes, mz_base, delta)
 
+def max_peak(peaks, mz_base, delta=2):
+    """
+    max_peak :: Peaks -> Real -> Int -> Peak
+    Return Highest Peak within range:  (mz_base - delta) < mz < (mz_base + delta)
+    Note: This is simpler (and more consistent) than choose_peak
+    """
+    pks= range_peaks(peaks, mz_base, delta)
+    mz,intensity = get_mz(pks), get_intensity(pks)
+    mx = np.max(intensity)
+    idx = np.argmax(intensity)
+    return peak(pks,idx)

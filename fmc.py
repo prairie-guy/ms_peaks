@@ -38,50 +38,68 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+#def max_peak(peaks, mz_base, delta=2):
 
-def c_peak(peaks):
+def c_peak(peaks,delta=2):
     """
     c_peak :: Peaks -> Peaks
     Return C apex Peaks (mw = 1508)
     """
-    apexes = apex_peaks(peaks)
-    return range_peaks(apexes, 1508)
+    return max_peak(peaks, 1508, delta)
 
-def fmc_peak(peaks):
+def fmc_peak(peaks,delta=2):
     """
-    fmcc_peak :: Peaks -> Peaks
-    Return 4mC apex Peaks (mw = 1508)
+    fmc_peak :: Peaks -> Peaks
+    Return 4mC apex Peaks (mw = 1522)
     """
-    apexes = apex_peaks(peaks)
-    return range_peaks(apexes, 1522)
+    return max_peak(peaks,1522, delta)
 
-def c_peak_area_spectrum(peaks, mz_to=90):
+def fec_peak(peaks,delta=2):
     """
-    c_peak_spectrum :: Peaks -> {d: (mz, intensity)}
-    Calculate area_peak for each mz from c_peak to (c_peak + 90) and return {d: (mz, intensity)}
-    Note: Useful Utility to scan data
+    fmc_peak :: Peaks -> Peaks
+    Return 4ethylC apex Peaks (mw = 1536)
     """
-    return {d: (mz(c_peak(peaks)) + d, area_peak(peaks, mz(c_peak(peaks)) + d)) for d in range(0,mz_to)}
+    return max_peak(peaks,1536, delta)
 
-# def efficiency(peaks, height = 1500, dist = 5):
-#     c, fc = c_peak(peaks, height, dist), fmc_peak(peaks, height, dist),
+def efficiency(fn_start, fn_end, peaks):
+    """
+    efficiency :: Function -> Function -> Peaks
+    """
+    try:
+        i_start = intensity(fn_start(peaks))
+        i_end   = intensity(fn_end(peaks))
+        return abs(round(i_end/(i_start + i_end),2))
+    except:
+        return 0
 
-#     if len_peaks(c) != 1: return(f"{c} is not peak 1508")
-#     c = intensity(c)
+def efficiency_fmc(peaks): return efficiency(c_peak, fmc_peak, peaks)
 
-#     if len_peaks(fc) > 1: return(f"{c} is not peak 1522")
-#     fc = 0 if empty_peaks(fc) else intensity(fc)
-#     return round(fc/(c+fc), 2)
+def efficiency_fec(peaks): return efficiency(c_peak, fec_peak, peaks)
 
-def efficiency(peaks):
-    c_spec = c_peak_area_spectrum(peaks) # {d: (mz,intensity)}
-    noise =  np.mean([c_spec[p][1] for p in [46,47,48,49,50]])  # Heuristic
-    c_idx, fmc_idx = 0, 14
-    c, fmc = c_spec[c_idx][1] - noise, c_spec[fmc_idx][1] -noise
-    return abs(round(fmc/(c+fmc), 2))
+def plot_multiple_specs(peaks_list, labels_list, title=None, save_as = None, xrange=(1500, 1600), figsize=(20, 12), annotate=True):
+    n = len(peaks_list)
+    fig, axs = plt.subplots(n, 1, figsize=figsize, squeeze=False)
+    #if title: plt.title(title) # For multiple figures, title is not working
+    for i, peaks in enumerate(peaks_list):
+        mz, intensity = peaks
+        ax = axs[i, 0]
+        ax.vlines(mz, ymin=0, ymax=intensity)
+        ax.set_xlim(*xrange)
+        ax.grid(color='gray', linestyle='-', linewidth=0.5)
+        #ax.set_xlabel("m/z")
+        #ax.set_ylabel("Intensity")
+        title = labels_list[i]
+        ax.text(0.5, 0.8, title, horizontalalignment='center', verticalalignment='center',
+                transform=ax.transAxes, fontsize=12, color='black')
+        if annotate:
+            for (x,y) in zip(get_mz(apex_peaks(peaks)), get_intensity(apex_peaks(peaks))):
+                ax.annotate(round(x,1), xy=(x,y/2), textcoords="offset points", xytext=(-5,10), ha='right')
+    plt.tight_layout()
+    if save_as:
+        plt.savefig(f"{save_as}.png")
+        plt.close(fig)
 
-
-def plot_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = (20,10), annotate = True):
+def plot_spec(peaks, title = None, save_as=None, xrange = (1500,1600),  figsize = (20,10), annotate = True):
     if len_peaks(peaks) < 500:
         return("`plot_deep_spec` is for original ms data. Use `plot_spec` instead")
     mz, intensity = peaks
@@ -91,15 +109,15 @@ def plot_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = (20,10
     plt.grid(color='gray', linestyle='-', linewidth=0.5)
     plt.xlabel("m/z")
     plt.ylabel("Intensity")
-    plt.title(fname) if title == None else plt.title(title)
+    if title: plt.title(title)
     if annotate:
         for (x,y) in zip(get_mz(apex_peaks(peaks)), get_intensity(apex_peaks(peaks))):
-            plt.annotate(x, xy=(x,y), textcoords="offset points", xytext=(0,10), ha='center')
-    plt.savefig(f"{fname}.png")
-    plt.close()
+            plt.annotate(x, xy=(x,y/2), textcoords="offset points", xytext=(-5,10), ha='right')
+    if save_as:
+        plt.savefig(f"{save_as}.png")
+        plt.close()
 
-
-def plot_spike_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = (20,10), annotate = True):
+def plot_spike_spec(peaks, title=None, save_as=None,xrange = (1500,1600),  figsize = (20,10), annotate = True):
     mz, intensity = peaks
     plt.figure(figsize = figsize)
     plt.vlines(mz, ymin=0, ymax=intensity)
@@ -107,36 +125,26 @@ def plot_spike_spec(peaks, fname, xrange = (1500,1600), title = None, figsize = 
     plt.grid(color='gray', linestyle='-', linewidth=0.5)
     plt.xlabel("m/z")
     plt.ylabel("Intensity")
-    plt.title(fname) if title == None else plt.title(title)
+    if title: plt.title(title)
     if annotate:
         for (x,y) in zip(get_mz(apex_peaks(peaks)), get_intensity(apex_peaks(peaks))):
-            plt.annotate(x, xy=(x,y), textcoords="offset points", xytext=(0,10), ha='center')
-    plt.savefig(f"{fname}.png")
-    plt.close()
+            plt.annotate(x, xy=(x,y), textcoords="offset points", xytext=(-5,10), ha='right')
+    if save_as:
+        plt.savefig(f"{save_as}.png")
+        plt.close()
 
-
-def plot_multiple_specs(peaks_list, labels_list, fname, xrange=(1500, 1600), figsize=(20, 16), annotate = True):
-    n = len(peaks_list)
-    fig, axs = plt.subplots(n, 1, figsize=figsize, squeeze=False)
-    for i, peaks in enumerate(peaks_list):
-        mz, intensity = peaks
-        ax = axs[i, 0]
-        ax.vlines(mz, ymin=0, ymax=intensity)
-        ax.set_xlim(*xrange)
-        ax.grid(color='gray', linestyle='-', linewidth=0.5)
-        if annotate:
-            apex_mz = get_mz(apex_peaks(peaks))
-            apex_intensity = get_intensity(apex_peaks(peaks))
-            for x, y in zip(apex_mz, apex_intensity):
-                ax.annotate(str(x), xy=(x, y), textcoords="offset points", xytext=(0, 10), ha='center')
-        title = labels_list[i]
-        ax.text(0.5, 0.8, title, horizontalalignment='center', verticalalignment='center',
-                transform=ax.transAxes, fontsize=12, color='black')
-    plt.tight_layout()
+def table_efficiency(peaks_list, labels_list, fname, figsize=(5,4)):
+    data = list(zip(labels_list, map(efficiency, peaks_list)))
+    columns = ('Sample', 'Efficiency')
+    rows = range(1, len(data) + 1)
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.axis('tight')
+    ax.axis('off')
+    ax.table(cellText=data, colLabels=columns, loc='center')
     plt.savefig(f"{fname}.png")
     plt.close(fig)
 
-
+    
 def plot_efficiency(peaks_list, labels_list, fname, champ = None, figsize = (6,4)):
     if len(peaks_list) != len(labels_list):
         return "error: The length of 'peaks' and 'labels' must be the same."
@@ -163,16 +171,7 @@ def plot_efficiency(peaks_list, labels_list, fname, champ = None, figsize = (6,4
     plt.close()
 
 
-def table_efficiency(peaks_list, labels_list, fname, figsize=(5,4)):
-    data = list(zip(labels_list, map(efficiency, peaks_list)))
-    columns = ('Sample', 'Efficiency')
-    rows = range(1, len(data) + 1)
-    fig, ax = plt.subplots(figsize=figsize)
-    ax.axis('tight')
-    ax.axis('off')
-    ax.table(cellText=data, colLabels=columns, loc='center')
-    plt.savefig(f"{fname}.png")
-    plt.close(fig)
+
 
 ####################################################################################################
 #
